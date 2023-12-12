@@ -1,13 +1,16 @@
 import React from 'react';
 import { Chat } from '../components/Chat';
-import { Session, newSession } from '../service/languachat';
+import { Session, newSession } from '../service/sessions';
+import { play } from '../service/utils';
 
 export const Home: React.FC = () => {
   const [session, setSession] = React.useState<Session | null>(null);
   const startActive = session ? 'btn-disabled' : '';
 
   const start = async () => {
-    setSession(await newSession());
+    const session = await newSession();
+    play(session.chat.messages[0].speech?.data!);
+    setSession(session);
   };
 
   return (

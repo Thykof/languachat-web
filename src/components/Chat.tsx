@@ -1,8 +1,8 @@
 import React from 'react';
 import { MessageComponent } from './Message';
-import { Session, SessionStatus, updateSession } from '../service/languachat';
-import { Roles } from '../service/chat/types';
-import { play, toArrayBuffer } from '../service/utils';
+import { Session, SessionStatus, updateSession } from '../service/sessions';
+import { Roles } from '../service/types';
+import { play } from '../service/utils';
 
 interface Props {
   session: Session;
@@ -16,12 +16,11 @@ export const Chat: React.FC<Props> = ({ session }) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       setMessages([...messages, { content: value, role: Roles.User }]);
-      updateSession(session, value).then((session) => {
-        setMessages(session.chat.messages);
-        const speech = session.chat.messages[session.chat.messages.length - 1].speech!;
-        play(toArrayBuffer(speech.data));
-      });
       setValue('');
+      const newSession = await updateSession(session, value);
+      const speech = newSession.chat.messages[newSession.chat.messages.length - 1].speech!;
+      play(speech.data);
+      setMessages(newSession.chat.messages);
     }
   }
 

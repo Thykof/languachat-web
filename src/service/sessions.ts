@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { Chat } from '../chat/types';
+import { Chat } from './types';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -28,15 +28,12 @@ export async function newSession(): Promise<Session> {
 }
 
 export interface UpdateSessionDto {
-  sessionId: string;
   userMessage: string;
 }
 
-export function updateSession(session: Session, userMessage: string): Promise<Session> {
-  return api
-    .put<Session, AxiosResponse<Session>, UpdateSessionDto>('/sessions', {
-      sessionId: session._id,
-      userMessage,
-    })
-    .then(({ data }) => data);
+export async function updateSession(session: Session, userMessage: string): Promise<Session> {
+  const { data } = await api.put<Session, AxiosResponse<Session>, UpdateSessionDto>(`/sessions/${session._id}`, {
+    userMessage,
+  });
+  return data;
 }

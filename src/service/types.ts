@@ -12,7 +12,6 @@ export interface Message {
 export enum Roles {
   User = 'user',
   Assistant = 'assistant',
-  System = 'system',
 }
 
 export interface Chat {
