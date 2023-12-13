@@ -1,5 +1,5 @@
 import React from 'react';
-import { Message, Roles } from '../service/types';
+import { Message, Roles } from '../service/chat';
 import { PlayCircle } from './icons/PlayCircle';
 import { play } from '../service/utils';
 

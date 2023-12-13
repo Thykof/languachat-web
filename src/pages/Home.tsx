@@ -1,7 +1,7 @@
 import React from 'react';
 import { Chat } from '../components/Chat';
 import { Session } from '../service/sessions';
-import { ClassroomSelector } from '../components/ClassroomSelector';
+import { ClassroomSelector } from '../components/ClassroomSelector/ClassroomSelector';
 
 export const Home: React.FC = () => {
   const [session, setSession] = React.useState<Session | null>(null);

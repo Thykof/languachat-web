@@ -1,7 +1,7 @@
 import React from 'react';
 import { MessageComponent } from './Message';
 import { Session, SessionStatus, updateSession } from '../service/sessions';
-import { Roles } from '../service/types';
+import { Roles } from '../service/chat';
 import { play } from '../service/utils';
 
 interface Props {

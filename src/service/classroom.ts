@@ -6,3 +6,9 @@ export enum Language {
   Italian = 'italian',
   Portuguese = 'portuguese',
 }
+
+export enum Level {
+  Beginner = 'beginner',
+  Intermediate = 'intermediate',
+  Advanced = 'advanced',
+}
