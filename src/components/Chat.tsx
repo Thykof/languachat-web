@@ -11,16 +11,19 @@ interface Props {
 export const Chat: React.FC<Props> = ({ session }) => {
   const [value, setValue] = React.useState('');
   const [messages, setMessages] = React.useState(session.chat.messages);
+  const [loading, setLoading] = React.useState(false);
 
   async function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === 'Enter') {
       e.preventDefault();
       setMessages([...messages, { content: value, role: Roles.User }]);
       setValue('');
+      setLoading(true);
       const newSession = await updateSession(session, value);
       const speech = newSession.chat.messages[newSession.chat.messages.length - 1].speech!;
       play(speech?.data);
       setMessages(newSession.chat.messages);
+      setLoading(false);
     }
   }
 
@@ -34,7 +37,7 @@ export const Chat: React.FC<Props> = ({ session }) => {
       <textarea
         className="m-4 textarea textarea-primary textarea-bordered textarea-lg w-full resize-none overflow-auto"
         rows={1}
-        disabled={session.status === SessionStatus.Ended}
+        disabled={session.status === SessionStatus.Ended || loading}
         onKeyDown={onKeyDown}
         value={value}
         onChange={(e) => setValue(e.target.value)}
