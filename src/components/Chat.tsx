@@ -12,6 +12,7 @@ export const Chat: React.FC<Props> = ({ session }) => {
   const [value, setValue] = React.useState('');
   const [messages, setMessages] = React.useState(session.chat.messages);
   const [loading, setLoading] = React.useState(false);
+  const [sessionEnded, setSessionEnded] = React.useState(false);
 
   async function onKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === 'Enter') {
@@ -24,6 +25,7 @@ export const Chat: React.FC<Props> = ({ session }) => {
       play(speech?.data);
       setMessages(newSession.chat.messages);
       setLoading(false);
+      setSessionEnded(newSession.status === SessionStatus.Ended);
     }
   }
 
@@ -38,7 +40,7 @@ export const Chat: React.FC<Props> = ({ session }) => {
       <textarea
         className="m-4 textarea textarea-primary textarea-bordered textarea-lg resize-none overflow-auto"
         rows={1}
-        disabled={session.status === SessionStatus.Ended || loading}
+        disabled={sessionEnded || loading}
         onKeyDown={onKeyDown}
         value={value}
         onChange={(e) => setValue(e.target.value)}

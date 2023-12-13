@@ -7,8 +7,8 @@ const api = axios.create({
 });
 
 export enum SessionStatus {
-  Active,
-  Ended,
+  Active = 'active',
+  Ended = 'ended',
 }
 
 export interface Session {
