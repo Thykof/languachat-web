@@ -19,7 +19,7 @@ export const Chat: React.FC<Props> = ({ session }) => {
       setValue('');
       const newSession = await updateSession(session, value);
       const speech = newSession.chat.messages[newSession.chat.messages.length - 1].speech!;
-      play(speech.data);
+      play(speech?.data);
       setMessages(newSession.chat.messages);
     }
   }
