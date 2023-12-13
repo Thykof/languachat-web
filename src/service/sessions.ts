@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { Chat } from './types';
+import { Language } from './classroom';
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -17,12 +18,12 @@ export interface Session {
 }
 
 interface CreateSessionDto {
-  classroomId: string;
+  language: string;
 }
 
-export async function newSession(): Promise<Session> {
+export async function newSession(language: Language): Promise<Session> {
   const { data } = await api.post<Session, AxiosResponse<Session>, CreateSessionDto>('/sessions', {
-    classroomId: import.meta.env.VITE_DEFAULT_CLASSROOM_ID,
+    language,
   });
   return data;
 }

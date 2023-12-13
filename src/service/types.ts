@@ -1,6 +1,6 @@
 export interface Speech {
   type: 'Buffer';
-  data: number[];
+  data: number[] | undefined;
 }
 
 export interface Message {

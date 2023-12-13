@@ -1,4 +1,7 @@
-export async function play(data: number[]) {
+export async function play(data: number[] | undefined) {
+  if (data === undefined) {
+    return;
+  }
   const context = new AudioContext();
   const buffer = await context.decodeAudioData(toArrayBuffer(data));
   const source = context.createBufferSource();
