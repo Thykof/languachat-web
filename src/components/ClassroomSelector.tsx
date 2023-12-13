@@ -9,13 +9,14 @@ interface ClassroomSelectorProps {
 
 export const ClassroomSelector: React.FC<ClassroomSelectorProps> = ({ setSession }) => {
   const [selectedLanguage, setSelectedLanguage] = React.useState<Language | null>(null);
-  const startActive = true;
+  const [startActive, setStartActive] = React.useState(false);
 
   const start = async () => {
     if (selectedLanguage === null) {
       console.error('No language selected');
       return;
     }
+    setStartActive(false);
     const session = await newSession(selectedLanguage);
     play(session.chat.messages[0].speech?.data!);
     setSession(session);
@@ -26,13 +27,14 @@ export const ClassroomSelector: React.FC<ClassroomSelectorProps> = ({ setSession
       console.error(`Invalid language: ${language}`);
     }
     setSelectedLanguage(language as Language);
+    setStartActive(true);
   };
 
   // language, coach, level, topic
 
   return (
     <>
-      <div className="flex flex-col">
+      <div className="flex flex-col pb-4">
         <div className="flex flex-wrap justify-center">
           {Object.values(Language).map((language) => (
             <button

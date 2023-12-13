@@ -28,14 +28,14 @@ export const Chat: React.FC<Props> = ({ session }) => {
   }
 
   return (
-    <div className="flex flex-col w-4/5">
+    <div className="flex flex-col">
       <div className="pb-4">
         {messages.map((message, index) => (
           <MessageComponent key={index} message={message} />
         ))}
       </div>
       <textarea
-        className="m-4 textarea textarea-primary textarea-bordered textarea-lg w-full resize-none overflow-auto"
+        className="m-4 textarea textarea-primary textarea-bordered textarea-lg resize-none overflow-auto"
         rows={1}
         disabled={session.status === SessionStatus.Ended || loading}
         onKeyDown={onKeyDown}
