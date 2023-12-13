@@ -13,7 +13,7 @@ export default {
           'primary-content': '#ffffff',
           secondary: '#D4FF08',
           'secondary-focus': '#b3fd58',
-          'secondary-content': '#ffffff',
+          'secondary-content': '#000',
           accent: '#08D4FF',
           'accent-focus': '#559ca3',
           'accent-content': '#ffffff',

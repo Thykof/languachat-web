@@ -35,7 +35,7 @@ export const ClassroomSelector: React.FC<ClassroomSelectorProps> = ({ setSession
   return (
     <>
       <div className="flex flex-col pb-4">
-        <div className="flex flex-wrap justify-center">
+        <div className="flex flex-wrap justify-center pb-2">
           {Object.values(Language).map((language) => (
             <button
               key={language}
