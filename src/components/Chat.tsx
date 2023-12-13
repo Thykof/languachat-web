@@ -34,6 +34,7 @@ export const Chat: React.FC<Props> = ({ session }) => {
           <MessageComponent key={index} message={message} />
         ))}
       </div>
+      {loading && <span className="loading loading-dots loading-md"></span>}
       <textarea
         className="m-4 textarea textarea-primary textarea-bordered textarea-lg resize-none overflow-auto"
         rows={1}

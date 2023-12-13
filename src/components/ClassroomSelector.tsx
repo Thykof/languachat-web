@@ -10,6 +10,7 @@ interface ClassroomSelectorProps {
 export const ClassroomSelector: React.FC<ClassroomSelectorProps> = ({ setSession }) => {
   const [selectedLanguage, setSelectedLanguage] = React.useState<Language | null>(null);
   const [startActive, setStartActive] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const start = async () => {
     if (selectedLanguage === null) {
@@ -17,9 +18,11 @@ export const ClassroomSelector: React.FC<ClassroomSelectorProps> = ({ setSession
       return;
     }
     setStartActive(false);
+    setLoading(true);
     const session = await newSession(selectedLanguage);
     play(session.chat.messages[0].speech?.data!);
     setSession(session);
+    setLoading(false);
   };
 
   const languageSelected = (language: string) => () => {
@@ -54,6 +57,7 @@ export const ClassroomSelector: React.FC<ClassroomSelectorProps> = ({ setSession
           </button>
         </div>
       </div>
+      {loading && <span className="loading loading-dots loading-md"></span>}
     </>
   );
 };
