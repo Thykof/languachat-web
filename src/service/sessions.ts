@@ -1,8 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { Chat } from './chat';
-import { Language } from './classroom';
 import { api } from './api';
-import { Persona } from './personas';
 
 export enum SessionStatus {
   Active = 'active',
@@ -16,14 +14,12 @@ export interface Session {
 }
 
 interface CreateSessionDto {
-  language: string;
-  personaId: string;
+  classroomId: string;
 }
 
-export async function newSession(language: Language, persona: Persona): Promise<Session> {
+export async function newSession(classroomId: string): Promise<Session> {
   const { data } = await api.post<Session, AxiosResponse<Session>, CreateSessionDto>('/sessions', {
-    language,
-    personaId: persona._id,
+    classroomId,
   });
   return data;
 }

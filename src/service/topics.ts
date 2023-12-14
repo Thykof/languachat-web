@@ -1,6 +1,12 @@
 import { api } from './api';
 
-export async function getTopics() {
-  const { data } = await api.get('/topics');
+export interface Topic {
+  _id: string;
+  name: string;
+  description: string;
+}
+
+export async function getTopics(): Promise<Topic[]> {
+  const { data } = await api.get<Topic[]>('/topics');
   return data;
 }

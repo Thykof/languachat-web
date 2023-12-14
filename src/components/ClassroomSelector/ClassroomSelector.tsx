@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { play } from '../../service/utils';
 import { Session, newSession } from '../../service/sessions';
-import { Language } from '../../service/classroom';
+import { Language, findOrCreateClassroom } from '../../service/classroom';
 import { subscribe, unsubscribe } from '../../service/event';
 import { EVENT_LANGUAGE_SELECTED, LanguageSelectedEvent, LanguageSelector } from './LanguageSelector';
 import { Persona } from '../../service/personas';
@@ -48,7 +48,8 @@ export const ClassroomSelector: React.FC<ClassroomSelectorProps> = ({ setSession
     }
     setStartActive(false);
     setLoading(true);
-    const session = await newSession(language, persona);
+    const classroom = await findOrCreateClassroom(language, persona);
+    const session = await newSession(classroom._id);
     play(session.chat.messages[0].speech?.data!);
     setSession(session);
     setLoading(false);
