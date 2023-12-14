@@ -40,17 +40,19 @@ export async function getClassroom(): Promise<Classroom[]> {
   return data;
 }
 
-export async function findOrCreateClassroom(language: Language, persona: Persona): Promise<Classroom> {
+export async function findOrCreateClassroom(language: Language, persona: Persona, level: Level): Promise<Classroom> {
   const classrooms = await getClassroom();
-  const classroom = classrooms.find((c) => c.language === language && c.persona.name === persona.name);
+  const classroom = classrooms.find(
+    (c) => c.language === language && c.persona.name === persona.name && c.level === level,
+  );
   if (classroom) {
     return classroom;
   }
 
   const { data } = await api.post<Classroom, AxiosResponse<Classroom>, CreateClassroomDto>('/classrooms', {
-    name: `${persona.name} - ${language}`,
+    name: `${persona.name} - ${language} - ${level}`,
     language,
-    level: Level.Beginner,
+    level,
     personaId: persona._id,
   });
   return data;
