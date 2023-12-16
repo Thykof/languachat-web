@@ -26,17 +26,23 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({ persona: selec
 
   return (
     <div className="flex flex-wrap justify-center pb-2">
-      {personas.map((persona) => (
-        <button
-          key={persona._id}
-          className={`btn ${
-            selectedPersona === null || selectedPersona._id === persona._id ? '' : 'btn-disabled'
-          } btn-secondary mr-2 mb-2`}
-          onClick={personaSelected(persona)}
-        >
-          {persona.name} {persona.description}
+      {personas.length === 0 ? (
+        <button className="btn btn-secondary mr-2 mb-2">
+          <span className="loading loading-spinner loading-xs"></span>
         </button>
-      ))}
+      ) : (
+        personas.map((persona) => (
+          <button
+            key={persona._id}
+            className={`btn ${
+              selectedPersona === null || selectedPersona._id === persona._id ? '' : 'btn-disabled'
+            } btn-secondary mr-2 mb-2`}
+            onClick={personaSelected(persona)}
+          >
+            {persona.name} {persona.description}
+          </button>
+        ))
+      )}
     </div>
   );
 };
