@@ -14,7 +14,15 @@ interface ClassroomSelectorProps {
   setSession: (session: Session) => void;
 }
 
+enum Steps {
+  LANGUAGE,
+  PERSONA,
+  LEVEL,
+  TOPIC,
+}
+
 export const ClassroomSelector: React.FC<ClassroomSelectorProps> = ({ setSession }) => {
+  const [step, setStep] = React.useState<Steps>(Steps.LANGUAGE);
   const [startActive, setStartActive] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [language, setLanguage] = React.useState<Language | null>(null);
@@ -22,18 +30,17 @@ export const ClassroomSelector: React.FC<ClassroomSelectorProps> = ({ setSession
   const [level, setLevel] = React.useState<Level | null>(null);
   const [topic, setTopic] = React.useState<Topic | null>(null);
 
-  const updateStartActive = () => {
-    setStartActive(language !== null && persona !== null && level !== null && topic !== null);
-  };
-
   const languageListener = (evt: CustomEvent<LanguageSelectedEvent>) => {
     setLanguage(evt.detail.language);
+    setStep(Steps.PERSONA);
   };
   const personaListener = (evt: CustomEvent<PersonaSelectedEvent>) => {
     setPersona(evt.detail.persona);
+    setStep(Steps.LEVEL);
   };
   const levelListener = (evt: CustomEvent<{ level: Level }>) => {
     setLevel(evt.detail.level);
+    setStep(Steps.TOPIC);
   };
   const topicListener = (evt: CustomEvent<{ topic: Topic }>) => {
     setTopic(evt.detail.topic);
@@ -54,11 +61,11 @@ export const ClassroomSelector: React.FC<ClassroomSelectorProps> = ({ setSession
   }, []);
 
   useEffect(() => {
-    updateStartActive();
+    setStartActive(language !== null && persona !== null && level !== null && topic !== null);
   }, [language, persona, level, topic]);
 
   const start = async () => {
-    if (language === null || persona === null || level === null) {
+    if (language === null || persona === null || level === null || topic === null) {
       console.error('some  info not selected');
       return;
     }
@@ -75,10 +82,10 @@ export const ClassroomSelector: React.FC<ClassroomSelectorProps> = ({ setSession
     <>
       <div className="flex flex-col pb-4">
         <div className="text-center">
-          <LanguageSelector language={language} />
-          <PersonaSelector persona={persona} />
-          <LevelSelector level={level} />
-          <TopicSelector topic={topic} />
+          {step >= Steps.LANGUAGE && <LanguageSelector language={language} />}
+          {step >= Steps.PERSONA && <PersonaSelector persona={persona} />}
+          {step >= Steps.LEVEL && <LevelSelector level={level} />}
+          {step >= Steps.TOPIC && <TopicSelector topic={topic} />}
           <button className={`btn ${startActive ? '' : 'btn-disabled'} btn-primary`} onClick={start}>
             Start
           </button>
