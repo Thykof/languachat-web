@@ -7,6 +7,8 @@ import { EVENT_LANGUAGE_SELECTED, LanguageSelectedEvent, LanguageSelector } from
 import { Persona } from '../../service/personas';
 import { EVENT_PERSONA_SELECTED, PersonaSelectedEvent, PersonaSelector } from './PersonaSelector';
 import { EVENT_LEVEL_SELECTED, LevelSelector } from './LevelSelector';
+import { EVENT_TOPIC_SELECTED, TopicSelector } from './TopicSelector';
+import { Topic } from '../../service/topics';
 
 interface ClassroomSelectorProps {
   setSession: (session: Session) => void;
@@ -18,9 +20,10 @@ export const ClassroomSelector: React.FC<ClassroomSelectorProps> = ({ setSession
   const [language, setLanguage] = React.useState<Language | null>(null);
   const [persona, setPersona] = React.useState<Persona | null>(null);
   const [level, setLevel] = React.useState<Level | null>(null);
+  const [topic, setTopic] = React.useState<Topic | null>(null);
 
   const updateStartActive = () => {
-    setStartActive(language !== null && persona !== null && level !== null);
+    setStartActive(language !== null && persona !== null && level !== null && topic !== null);
   };
 
   const languageListener = (evt: CustomEvent<LanguageSelectedEvent>) => {
@@ -32,21 +35,27 @@ export const ClassroomSelector: React.FC<ClassroomSelectorProps> = ({ setSession
   const levelListener = (evt: CustomEvent<{ level: Level }>) => {
     setLevel(evt.detail.level);
   };
+  const topicListener = (evt: CustomEvent<{ topic: Topic }>) => {
+    setTopic(evt.detail.topic);
+  };
 
   useEffect(() => {
     subscribe(EVENT_LANGUAGE_SELECTED, languageListener);
     subscribe(EVENT_PERSONA_SELECTED, personaListener);
     subscribe(EVENT_LEVEL_SELECTED, levelListener);
+    subscribe(EVENT_LEVEL_SELECTED, levelListener);
+    subscribe(EVENT_TOPIC_SELECTED, topicListener);
     return () => {
       unsubscribe(EVENT_LANGUAGE_SELECTED, () => languageListener);
       unsubscribe(EVENT_PERSONA_SELECTED, () => personaListener);
       unsubscribe(EVENT_LEVEL_SELECTED, () => levelListener);
+      unsubscribe(EVENT_TOPIC_SELECTED, () => topicListener);
     };
   }, []);
 
   useEffect(() => {
     updateStartActive();
-  }, [language, persona, level]);
+  }, [language, persona, level, topic]);
 
   const start = async () => {
     if (language === null || persona === null || level === null) {
@@ -69,6 +78,7 @@ export const ClassroomSelector: React.FC<ClassroomSelectorProps> = ({ setSession
           <LanguageSelector language={language} />
           <PersonaSelector persona={persona} />
           <LevelSelector level={level} />
+          <TopicSelector topic={topic} />
           <button className={`btn ${startActive ? '' : 'btn-disabled'} btn-primary`} onClick={start}>
             Start
           </button>
