@@ -19,6 +19,7 @@ enum Steps {
   PERSONA,
   LEVEL,
   TOPIC,
+  START,
 }
 
 export const ClassroomSelector: React.FC<ClassroomSelectorProps> = ({ setSession }) => {
@@ -44,6 +45,7 @@ export const ClassroomSelector: React.FC<ClassroomSelectorProps> = ({ setSession
   };
   const topicListener = (evt: CustomEvent<{ topic: Topic }>) => {
     setTopic(evt.detail.topic);
+    setStep(Steps.START);
   };
 
   useEffect(() => {
