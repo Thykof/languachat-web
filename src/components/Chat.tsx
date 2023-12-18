@@ -44,6 +44,7 @@ export const Chat: React.FC<Props> = ({ session }) => {
         onKeyDown={onKeyDown}
         value={value}
         onChange={(e) => setValue(e.target.value)}
+        autoFocus
       />
     </div>
   );
