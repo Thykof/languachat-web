@@ -9,10 +9,11 @@ export interface TopicSelectedEvent {
 }
 
 interface TopicSelectorProps {
+  hide: boolean;
   topic: Topic | null;
 }
 
-export const TopicSelector: React.FC<TopicSelectorProps> = ({ topic: selectedTopic }) => {
+export const TopicSelector: React.FC<TopicSelectorProps> = ({ hide, topic: selectedTopic }) => {
   const [topics, setTopics] = React.useState<Topic[]>([]);
   const topicSelected = (topic: Topic) => () => {
     publish(EVENT_TOPIC_SELECTED, { topic });
@@ -23,6 +24,10 @@ export const TopicSelector: React.FC<TopicSelectorProps> = ({ topic: selectedTop
       getTopics().then((topics) => setTopics(topics));
     }
   });
+
+  if (hide) {
+    return null;
+  }
 
   return (
     <div className="flex flex-wrap justify-center pb-2">

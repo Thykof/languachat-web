@@ -29,10 +29,10 @@ export interface Classroom {
 
 export interface CreateClassroomDto {
   name: string;
-  topicId?: string;
   language: string;
-  level: string;
   personaId: string;
+  level: string;
+  topicId?: string;
 }
 
 export async function getClassroom(): Promise<Classroom[]> {
@@ -40,20 +40,26 @@ export async function getClassroom(): Promise<Classroom[]> {
   return data;
 }
 
-export async function findOrCreateClassroom(language: Language, persona: Persona, level: Level): Promise<Classroom> {
+export async function findOrCreateClassroom(
+  language: Language,
+  persona: Persona,
+  level: Level,
+  topic: Topic,
+): Promise<Classroom> {
   const classrooms = await getClassroom();
   const classroom = classrooms.find(
-    (c) => c.language === language && c.persona.name === persona.name && c.level === level,
+    (c) => c.language === language && c.persona._id === persona._id && c.level === level && c.topic._id === topic._id,
   );
   if (classroom) {
     return classroom;
   }
 
   const { data } = await api.post<Classroom, AxiosResponse<Classroom>, CreateClassroomDto>('/classrooms', {
-    name: `${persona.name} - ${language} - ${level}`,
+    name: `${persona.name} - ${language} - ${level} - ${topic.name}`,
     language,
-    level,
     personaId: persona._id,
+    level,
+    topicId: topic._id,
   });
   return data;
 }

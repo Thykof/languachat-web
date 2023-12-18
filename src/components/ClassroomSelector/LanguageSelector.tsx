@@ -9,16 +9,21 @@ export interface LanguageSelectedEvent {
 }
 
 interface LanguageSelectorProps {
+  hide: boolean;
   language: Language | null;
 }
 
-export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ language: selectedLanguage }) => {
+export const LanguageSelector: React.FC<LanguageSelectorProps> = ({ hide, language: selectedLanguage }) => {
   const languageSelected = (language: string) => () => {
     if (!(Object.values(Language) as unknown[]).includes(language)) {
       console.error(`Invalid language: ${language}`);
     }
     publish(EVENT_LANGUAGE_SELECTED, { language });
   };
+
+  if (hide) {
+    return null;
+  }
 
   return (
     <div className="flex flex-wrap justify-center pb-2">

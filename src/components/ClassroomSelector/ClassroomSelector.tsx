@@ -71,7 +71,7 @@ export const ClassroomSelector: React.FC<ClassroomSelectorProps> = ({ setSession
     }
     setStartActive(false);
     setLoading(true);
-    const classroom = await findOrCreateClassroom(language, persona, level);
+    const classroom = await findOrCreateClassroom(language, persona, level, topic);
     const session = await newSession(classroom._id);
     play(session.chat.messages[0].speech?.data!);
     setSession(session);
@@ -82,10 +82,10 @@ export const ClassroomSelector: React.FC<ClassroomSelectorProps> = ({ setSession
     <>
       <div className="flex flex-col pb-4">
         <div className="text-center">
-          {step >= Steps.LANGUAGE && <LanguageSelector language={language} />}
-          {step >= Steps.PERSONA && <PersonaSelector persona={persona} />}
-          {step >= Steps.LEVEL && <LevelSelector level={level} />}
-          {step >= Steps.TOPIC && <TopicSelector topic={topic} />}
+          <LanguageSelector language={language} hide={step !== Steps.LANGUAGE} />
+          <PersonaSelector persona={persona} hide={step !== Steps.PERSONA} />
+          <LevelSelector level={level} hide={step !== Steps.LEVEL} />
+          <TopicSelector topic={topic} hide={step !== Steps.TOPIC} />
           <button className={`btn ${startActive ? '' : 'btn-disabled'} btn-primary`} onClick={start}>
             Start
           </button>

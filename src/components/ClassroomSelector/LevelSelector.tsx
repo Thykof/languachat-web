@@ -9,16 +9,21 @@ export interface LevelSelectedEvent {
 }
 
 interface LevelSelectorProps {
+  hide: boolean;
   level: Level | null;
 }
 
-export const LevelSelector: React.FC<LevelSelectorProps> = ({ level: selectedLevel }) => {
+export const LevelSelector: React.FC<LevelSelectorProps> = ({ hide, level: selectedLevel }) => {
   const levelSelected = (level: string) => () => {
     if (!(Object.values(Level) as unknown[]).includes(level)) {
       console.error(`Invalid level: ${level}`);
     }
     publish(EVENT_LEVEL_SELECTED, { level });
   };
+
+  if (hide) {
+    return null;
+  }
 
   return (
     <div className="flex flex-wrap justify-center pb-2">

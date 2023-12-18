@@ -9,10 +9,11 @@ export interface PersonaSelectedEvent {
 }
 
 interface PersonaSelectorProps {
+  hide: boolean;
   persona: Persona | null;
 }
 
-export const PersonaSelector: React.FC<PersonaSelectorProps> = ({ persona: selectedPersona }) => {
+export const PersonaSelector: React.FC<PersonaSelectorProps> = ({ hide, persona: selectedPersona }) => {
   const [personas, setPersonas] = React.useState<Persona[]>([]);
   const personaSelected = (persona: Persona) => () => {
     publish(EVENT_PERSONA_SELECTED, { persona });
@@ -23,6 +24,10 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({ persona: selec
       getPersonas().then((personas) => setPersonas(personas));
     }
   });
+
+  if (hide) {
+    return null;
+  }
 
   return (
     <div className="flex flex-wrap justify-center pb-2">
