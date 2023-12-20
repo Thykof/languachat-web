@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { MessageComponent } from './Message';
 import { Session, SessionStatus, updateSession } from '../service/sessions';
 import { Roles } from '../service/chat';
@@ -9,6 +9,7 @@ interface Props {
 }
 
 export const Chat: React.FC<Props> = ({ session }) => {
+  const textArea = useRef(null);
   const [value, setValue] = React.useState('');
   const [messages, setMessages] = React.useState(session.chat.messages);
   const [loading, setLoading] = React.useState(false);
@@ -29,6 +30,13 @@ export const Chat: React.FC<Props> = ({ session }) => {
     }
   }
 
+  useEffect(() => {
+    if (textArea.current) {
+      // @ts-ignore
+      textArea.current.focus();
+    }
+  }, [messages]);
+
   return (
     <div className="flex flex-col">
       <div className="pb-4">
@@ -45,6 +53,7 @@ export const Chat: React.FC<Props> = ({ session }) => {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         autoFocus
+        ref={textArea}
       />
     </div>
   );
